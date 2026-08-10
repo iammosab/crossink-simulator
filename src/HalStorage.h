@@ -105,6 +105,9 @@ public:
   bool sync();
   bool rename(const char *newPath);
   bool isDirectory() const;
+  // Firmware HalFile reports SdFat open failures caused by allocation pressure;
+  // host builds have no such failure mode, so this is always false.
+  bool allocationFailed() const { return false; }
   void rewindDirectory();
   bool close();
   HalFile openNextFile();
