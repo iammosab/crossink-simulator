@@ -41,4 +41,15 @@ public:
                   DateFormat dateFormat = MONTH_DAY_YEAR_LONG,
                   char numericSeparator = '/') const;
   bool syncFromNTP();
+
+  // Month names for the *_LONG formats come from the app through this hook so
+  // the HAL stays free of the i18n layer; without a provider the built-in
+  // English tables are used. monthIndex is 1..12. Mirrors the firmware HAL.
+  using MonthNameProvider = const char *(*)(uint8_t monthIndex, bool fullName);
+  void setMonthNameProvider(MonthNameProvider provider) {
+    monthNameProvider_ = provider;
+  }
+
+private:
+  MonthNameProvider monthNameProvider_ = nullptr;
 };
